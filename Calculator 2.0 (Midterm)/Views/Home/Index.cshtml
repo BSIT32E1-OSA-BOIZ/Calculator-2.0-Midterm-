@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adjusted Numbering Calculator</title>
+    <title>Adjusted Numbering & Binary Calculator</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             background-color: #f4f4f4;
             margin: 0;
         }
 
-        #calculator {
+        #calculator, #binary-converter {
             width: 320px;
             padding: 20px;
             border-radius: 10px;
@@ -24,9 +25,10 @@
             flex-direction: column;
             align-items: center;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-bottom: 20px;
         }
 
-        #result, #history {
+        #result, #history, #binary-input, #binary-output {
             width: 100%;
             margin-bottom: 10px;
             padding: 10px;
@@ -38,7 +40,7 @@
             font-size: 24px;
         }
 
-        .buttons {
+        .buttons, .binary-buttons {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -73,12 +75,17 @@
             background-color: #ff9800;
         }
 
-        .btn-grey1 {
-            background-color: darkgrey;
-        }
             .btn-orange:hover {
                 background-color: #e68900;
             }
+
+        .btn-grey1 {
+            background-color: darkgrey;
+        }
+
+        .binary-buttons button {
+            width: 145px; /* Resized width */
+        }
     </style>
 </head>
 <body>
@@ -88,30 +95,39 @@
         <div class="buttons">
             <button onclick="clearAll()" class="btn-grey">AC</button>
             <button onclick="backspace()" class="btn-grey">&#x23CE;</button>
-            <button onclick="addToExpression('%')" class="btn-grey">%</button>        
+            <button onclick="addToExpression('%')" class="btn-grey">%</button>
             <button onclick="addToExpression('7')">7</button>
             <button onclick="addToExpression('8')">8</button>
             <button onclick="addToExpression('9')">9</button>
             <button onclick="addToExpression('4')">4</button>
             <button onclick="addToExpression('5')">5</button>
-            <button onclick="addToExpression('6')">6</button>          
+            <button onclick="addToExpression('6')">6</button>
             <button onclick="addToExpression('1')">1</button>
             <button onclick="addToExpression('2')">2</button>
-            <button onclick="addToExpression('3')">3</button>  
+            <button onclick="addToExpression('3')">3</button>
             <button onclick="addToExpression('0')" style="width: 145px;">0</button>
             <button onclick="addToExpression('.')">.</button>
             <button onclick="addToExpression('/')" class="btn-orange">/</button>
             <button onclick="addToExpression('*')" class="btn-orange">*</button>
             <button onclick="addToExpression('-')" class="btn-orange">-</button>
             <button onclick="addToExpression('+')" class="btn-orange">+</button>
-            
             <button onclick="calculate()" class="btn-grey1">=</button>
+        </div>
+    </div>
+    <div id="binary-converter">
+        <div id="binary-input" contenteditable="true"></div>
+        <div id="binary-output" readonly>0</div>
+        <div class="binary-buttons">
+            <button onclick="convertToBinary()" class="btn-orange">To Binary</button>
+            <button onclick="convertFromBinary()" class="btn-grey">From Binary</button>
         </div>
     </div>
 
     <script>
         let history = document.getElementById('history');
         let result = document.getElementById('result');
+        let binaryInput = document.getElementById('binary-input');
+        let binaryOutput = document.getElementById('binary-output');
 
         function addToExpression(value) {
             if (result.innerText === '0' && value !== '.') {
@@ -138,6 +154,16 @@
         function backspace() {
             result.innerText = result.innerText.slice(0, -1);
             if (result.innerText === '') result.innerText = '0';
+        }
+
+        function convertToBinary() {
+            let decimalNumber = parseInt(binaryInput.innerText || "0", 10);
+            binaryOutput.innerText = decimalNumber.toString(2);
+        }
+
+        function convertFromBinary() {
+            let binaryNumber = binaryInput.innerText || "0";
+            binaryOutput.innerText = parseInt(binaryNumber, 2);
         }
     </script>
 </body>
